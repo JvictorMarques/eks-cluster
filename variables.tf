@@ -21,12 +21,8 @@ variable "vpc" {
   }
 }
 
-variable "subnets" {
-  type = object({
-    availability_zone = list(string)
-  })
-  description = "Values from Subnets public and private configuration"
-  default = {
-    availability_zone = ["us-east-1a", "us-east-1b"]
-  }
+variable "subnets_availability_zones" {
+  type        = list(string)
+  description = "Values of availability zones for public and private subnets"
+  default     = ["us-east-1a", "us-east-1b"]
 }
