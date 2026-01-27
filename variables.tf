@@ -7,18 +7,16 @@ variable "default_tags" {
   }
 }
 
-variable "vpc" {
-  type = object({
-    tags       = map(string)
-    cidr_block = string
-  })
-  description = "Values from VPC configuration"
-  default = {
-    tags = {
-      Name = "eks-cluster-vpc"
-    }
-    cidr_block = "10.0.0.0/16"
-  }
+variable "project_name" {
+  type        = string
+  description = "The name of the project"
+  default     = "eks-cluster"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "VPC CIDR block spec"
+  default     = "10.0.0.0/16"
 }
 
 variable "subnets_availability_zones" {
