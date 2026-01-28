@@ -43,3 +43,28 @@ resource "aws_eks_cluster" "this" {
     aws_iam_role_policy_attachment.cluster_AmazonEKSNetworkingPolicy,
   ]
 }
+
+resource "aws_eks_access_entry" "this" {
+  for_each = var.eks.acess_entry.principal_arn
+
+  cluster_name      = aws_eks_cluster.this.name
+  principal_arn     = each.value
+  kubernetes_groups = ["group-1", "group-2"]
+  type              = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "this" {
+  for_each = var.eks.acess_entry.principal_arn
+
+  cluster_name  = aws_eks_cluster.this.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+  principal_arn = each.value
+
+  access_scope {
+    type = "cluster"
+  }
+
+  depends_on = [
+    aws_eks_access_entry.this
+  ]
+}

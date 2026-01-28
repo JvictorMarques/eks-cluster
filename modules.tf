@@ -13,5 +13,8 @@ module "eks_cluster" {
     name       = var.vpc.name
     version    = var.eks_version
     subnet_ids = module.network.private_subnets
+    acess_entry = {
+      principal_arn = var.principal_arns
+    }
   }
 }

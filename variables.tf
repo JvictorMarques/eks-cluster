@@ -17,3 +17,8 @@ variable "eks_version" {
   description = "EKS cluster version"
   default     = "1.34"
 }
+
+variable "principal_arns" {
+  type        = set(string)
+  description = "Set of principal ARNs for EKS access entries"
+}
