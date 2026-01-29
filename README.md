@@ -8,9 +8,9 @@ This repository contains Terraform code to create a VPC and an Amazon EKS cluste
 
 This project provisions:
 
-✔️ A VPC with public and private subnets
-✔️ A managed AWS EKS (Elastic Kubernetes Service) cluster
-✔️ Fully parameterized configuration using Terraform variables
+✔️ A VPC with public and private subnets  
+✔️ A managed AWS EKS (Elastic Kubernetes Service) cluster  
+✔️ Fully parameterized configuration using Terraform variables  
 
 The goal is to provide a clean and reusable baseline for Kubernetes infrastructure on AWS.
 
