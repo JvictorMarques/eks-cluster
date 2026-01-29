@@ -22,7 +22,6 @@ variable "eks_cluster_name" {
 variable "eks_version" {
   type        = string
   description = "EKS cluster version"
-  default     = "1.34"
 }
 
 variable "principal_arns" {
