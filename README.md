@@ -1,5 +1,83 @@
 # eks-cluster
-Create a AWS EKS Cluster with Terraform
+
+> Terraform infrastructure to provision an **AWS EKS cluster** in a modular and reusable way.
+
+This repository contains Terraform code to create a VPC and an Amazon EKS cluster using custom modules, following Infrastructure as Code (IaC) best practices.
+
+## 🧠 Overview
+
+This project provisions:
+
+✔️ A VPC with public and private subnets
+✔️ A managed AWS EKS (Elastic Kubernetes Service) cluster
+✔️ Fully parameterized configuration using Terraform variables
+
+The goal is to provide a clean and reusable baseline for Kubernetes infrastructure on AWS.
+
+## 📌 Project structure
+
+```
+.
+├── main.tf
+├── variables.tf
+├── modules
+│   ├── eks
+│   └── vpc
+├── .gitignore
+├── .terraform.lock.hcl
+├── LICENSE
+└── README.md
+```
+
+## 🚀 Prerequisites
+
+Before getting started, make sure you have:
+
+✔️ Terraform (recommended version: ~> 1.14.3)  
+✔️ AWS CLI configured with valid credentials  
+✔️ An AWS account with permissions to create IAM, VPC, EC2, and EKS resources
+
+Check your Terraform version:
+```
+terraform version
+```
+## ⚙️ Usage
+
+1. Clone the repository
+```
+git clone https://github.com/JvictorMarques/eks-cluster.git
+cd eks-cluster
+```
+
+2. Configure variables  
+Create a terraform.tfvars file:
+```
+aws_region                  = "us-east-1"
+eks_cluster_name           = "my-eks-cluster"
+eks_version                = "1.27"
+principal_arns             = ["arn:aws:iam::123456789012:role/AdminRole"]
+
+vpc_name                   = "infra-vpc"
+vpc_cidr_block             = "10.0.0.0/16"
+subnets_availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+
+default_tags = {
+  Project = "eks-cluster"
+  Owner   = "DevOps"
+}
+```
+
+3. Initialize Terraform
+```
+terraform init
+```
+
+4. Plan and apply
+```
+terraform plan
+terraform apply
+```
+
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -41,3 +119,12 @@ No resources.
 
 No outputs.
 <!-- END_TF_DOCS -->
+## 🤝 Contributing
+
+Contributions are welcome!
+Feel free to open issues or submit pull requests 🚀
+
+## 📜 License
+
+This project is licensed under the MIT License.
+See the LICENSE file for more details.
