@@ -1,12 +1,12 @@
 resource "aws_eks_cluster" "this" {
-  name = var.eks.name
+  name = var.eks_cluster_name
 
   access_config {
     authentication_mode = "API"
   }
 
   role_arn = aws_iam_role.eks_cluster.arn
-  version  = var.eks.version
+  version  = var.eks_version
 
   bootstrap_self_managed_addons = false
 
@@ -32,7 +32,7 @@ resource "aws_eks_cluster" "this" {
     endpoint_private_access = true
     endpoint_public_access  = true
 
-    subnet_ids = var.eks.subnet_ids
+    subnet_ids = var.eks_subnet_ids
   }
 
   depends_on = [
@@ -45,7 +45,7 @@ resource "aws_eks_cluster" "this" {
 }
 
 resource "aws_eks_access_entry" "this" {
-  for_each = var.eks.access_entry.principal_arn
+  for_each = var.principal_arns
 
   cluster_name      = aws_eks_cluster.this.name
   principal_arn     = each.value
@@ -54,7 +54,7 @@ resource "aws_eks_access_entry" "this" {
 }
 
 resource "aws_eks_access_policy_association" "this" {
-  for_each = var.eks.access_entry.principal_arn
+  for_each = var.principal_arns
 
   cluster_name  = aws_eks_cluster.this.name
   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"

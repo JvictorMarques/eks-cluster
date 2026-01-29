@@ -1,15 +1,22 @@
 
-variable "vpc" {
-  type = object({
-    name       = string
-    cidr_block = string
-  })
-  description = "Values of VPC configuration"
+variable "vpc_name" {
+  type        = string
+  description = "VPC name"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "VPC CIDR block"
 }
 
 variable "subnets_availability_zones" {
   type        = set(string)
   description = "AZ for public and private subnets"
+}
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "EKS cluster name"
 }
 
 variable "eks_version" {

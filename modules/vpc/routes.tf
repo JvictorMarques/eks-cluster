@@ -7,7 +7,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.vpc.name}-igw-rt"
+    Name = "${var.vpc_name}-igw-rt"
   }
 }
 
@@ -26,7 +26,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${var.vpc.name}-nat-gw-rt"
+    Name = "${var.vpc_name}-nat-gw-rt"
   }
 }
 
