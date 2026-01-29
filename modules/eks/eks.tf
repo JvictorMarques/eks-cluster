@@ -45,7 +45,7 @@ resource "aws_eks_cluster" "this" {
 }
 
 resource "aws_eks_access_entry" "this" {
-  for_each = var.eks.acess_entry.principal_arn
+  for_each = var.eks.access_entry.principal_arn
 
   cluster_name      = aws_eks_cluster.this.name
   principal_arn     = each.value
@@ -54,10 +54,10 @@ resource "aws_eks_access_entry" "this" {
 }
 
 resource "aws_eks_access_policy_association" "this" {
-  for_each = var.eks.acess_entry.principal_arn
+  for_each = var.eks.access_entry.principal_arn
 
   cluster_name  = aws_eks_cluster.this.name
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
   principal_arn = each.value
 
   access_scope {

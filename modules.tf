@@ -10,10 +10,13 @@ module "eks_cluster" {
   source = "./modules/eks"
 
   eks = {
-    name       = var.vpc.name
-    version    = var.eks_version
-    subnet_ids = module.network.private_subnets
-    acess_entry = {
+    name    = var.vpc.name
+    version = var.eks_version
+    subnet_ids = concat(
+      module.network.public_subnets,
+      module.network.private_subnets
+    )
+    access_entry = {
       principal_arn = var.principal_arns
     }
   }
