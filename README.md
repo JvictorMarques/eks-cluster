@@ -14,6 +14,10 @@ This project provisions:
 
 The goal is to provide a clean and reusable baseline for Kubernetes infrastructure on AWS.
 
+## 🗺️ Diagram Architecture
+
+![Diagram Architecture](images/diagram.png)
+
 ## 📌 Project structure
 
 ```
