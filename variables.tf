@@ -1,3 +1,13 @@
+variable "default_tags" {
+  type        = map(string)
+  description = "Default tags to apply to all resources"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "AWS region"
+  default     = "us-east-1"
+}
 
 variable "vpc_name" {
   type        = string

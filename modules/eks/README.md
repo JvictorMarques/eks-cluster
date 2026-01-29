@@ -7,7 +7,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.28.0 |
+| <a name="provider_aws"></a> [aws](#provider_aws) | 6.28.0 |
 
 ## Modules
 
@@ -34,10 +34,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | EKS cluster name | `string` | n/a | yes |
-| <a name="input_eks_subnet_ids"></a> [eks\_subnet\_ids](#input\_eks\_subnet\_ids) | List of subnet IDs for EKS cluster | `list(string)` | n/a | yes |
-| <a name="input_eks_version"></a> [eks\_version](#input\_eks\_version) | EKS cluster version | `string` | n/a | yes |
-| <a name="input_principal_arns"></a> [principal\_arns](#input\_principal\_arns) | Set of principal ARNs for EKS access entries | `set(string)` | n/a | yes |
+| <a name="input_eks_cluster_name"></a> [eks_cluster_name](#input_eks_cluster_name) | EKS cluster name | `string` | n/a | yes |
+| <a name="input_eks_subnet_ids"></a> [eks_subnet_ids](#input_eks_subnet_ids) | List of subnet IDs for EKS cluster | `list(string)` | n/a | yes |
+| <a name="input_eks_version"></a> [eks_version](#input_eks_version) | EKS cluster version | `string` | n/a | yes |
+| <a name="input_principal_arns"></a> [principal_arns](#input_principal_arns) | Set of principal ARNs for EKS access entries | `set(string)` | n/a | yes |
 
 ## Outputs
 
