@@ -4,6 +4,7 @@ module "network" {
   vpc_name                   = var.vpc_name
   vpc_cidr_block             = var.vpc_cidr_block
   subnets_availability_zones = var.subnets_availability_zones
+  eks_cluster_name           = var.eks_cluster_name
 }
 
 module "eks_cluster" {
@@ -11,9 +12,6 @@ module "eks_cluster" {
 
   eks_cluster_name = var.eks_cluster_name
   eks_version      = var.eks_version
-  eks_subnet_ids = concat(
-    module.network.public_subnets,
-    module.network.private_subnets
-  )
-  principal_arns = var.principal_arns
+  eks_subnet_ids   = module.network.private_subnets
+  principal_arns   = var.principal_arns
 }

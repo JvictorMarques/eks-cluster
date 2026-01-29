@@ -4,11 +4,7 @@ output:
   file: README.md
   mode: inject
 
-recursive:
-  enabled: true
-  path: modules
-
 settings:
   anchor: true
   escape: false
-  indent: 2t
+  indent: 2

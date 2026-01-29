@@ -19,3 +19,8 @@ variable "subnets_availability_zones" {
     error_message = "You must to have at least one Availability Zones"
   }
 }
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "EKS cluster name for subnet tagging"
+}

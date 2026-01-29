@@ -5,8 +5,9 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.this.id
   cidr_block              = cidrsubnet(aws_vpc.this.cidr_block, 8, count.index + 1)
   tags = {
-    Name                     = "public-${var.vpc_name}-${substr(local.tolist_subnets_availability_zones[count.index], -2, 2)}"
-    "kubernetes.io/role/elb" = "1"
+    Name                                            = "public-${var.vpc_name}-${substr(local.tolist_subnets_availability_zones[count.index], -2, 2)}"
+    "kubernetes.io/role/elb"                        = "1"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
   }
 }
 
@@ -17,7 +18,8 @@ resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.this.id
   cidr_block              = cidrsubnet(aws_vpc.this.cidr_block, 8, count.index + length(local.tolist_subnets_availability_zones) + 1)
   tags = {
-    Name                              = "private-${var.vpc_name}-${substr(local.tolist_subnets_availability_zones[count.index], -2, 2)}"
-    "kubernetes.io/role/internal-elb" = "1"
+    Name                                            = "private-${var.vpc_name}-${substr(local.tolist_subnets_availability_zones[count.index], -2, 2)}"
+    "kubernetes.io/role/internal-elb"               = "1"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
   }
 }

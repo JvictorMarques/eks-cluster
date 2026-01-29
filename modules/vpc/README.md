@@ -31,6 +31,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_eks_cluster_name"></a> [eks_cluster_name](#input_eks_cluster_name) | EKS cluster name for subnet tagging | `string` | n/a | yes |
 | <a name="input_subnets_availability_zones"></a> [subnets_availability_zones](#input_subnets_availability_zones) | Values of availability zones for public and private subnets | `set(string)` | n/a | yes |
 | <a name="input_vpc_cidr_block"></a> [vpc_cidr_block](#input_vpc_cidr_block) | VPC CIDR block | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_vpc_name"></a> [vpc_name](#input_vpc_name) | VPC name | `string` | `"eks-cluster"` | no |
