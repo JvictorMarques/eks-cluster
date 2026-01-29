@@ -11,4 +11,4 @@ recursive:
 settings:
   anchor: true
   escape: false
-  indent: 2
+  indent: 2t
