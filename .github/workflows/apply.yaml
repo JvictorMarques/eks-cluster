@@ -1,4 +1,4 @@
-name: Verify Infrastructure and Format
+name: Apply Infrastructure and Deploy
 on:
   workflow_dispatch:
   # push:
