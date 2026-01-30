@@ -1,0 +1,52 @@
+name: Verify Infrastructure and Format
+on:
+  pull_request:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  verify_fmt_and_validate:
+    name: Verify Terraform Format and Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ vars.TERRAFORM_VERSION }}
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+
+      - name: Terraform initialize
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Check AWS CLI Version
+        run: aws --version
+
+      - name: Terraform Plan
+        id: apply
+        env: 
+          TF_VAR_principal_arns: '["${{ secrets.AWS_ROLE_TO_ASSUME }}"]'
+          TF_VAR_cluster_name: ${{ vars.EKS_CLUSTER_NAME }}
+        run: terraform plan -var-file=env/terraform.tfvars -no-color -input=false
+        continue-on-error: true

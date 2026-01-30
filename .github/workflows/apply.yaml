@@ -1,0 +1,65 @@
+name: Apply Infrastructure and Deploy Application
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  apply-and-deploy:
+    name: Apply Infrastructure and Deploy Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ vars.TERRAFORM_VERSION }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+
+      - name: Terraform initialize
+        run: terraform init
+
+      - name: Terraform apply
+        env: 
+          TF_VAR_principal_arns: '["${{ secrets.AWS_ROLE_TO_ASSUME }}"]'
+          TF_VAR_cluster_name: ${{ vars.EKS_CLUSTER_NAME }}
+        run: terraform apply -var-file=env/terraform.tfvars -no-color -input=false -auto-approve
+
+      - name: Set kubeconfig context
+        run: |
+          aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+
+      - name: Deploy Kubernetes manifests
+        uses: Azure/k8s-deploy@v5
+        with:
+          manifests: |
+              k8s/*.yaml
+
+      - name: Get ALB Ingress URL
+        run: |
+          sleep 120; # wait for ALB to be provisioned
+          aws elbv2 describe-load-balancers \
+            --query "LoadBalancers[?contains(LoadBalancerName, 'k8s-default-2048ingr')].[LoadBalancerName,DNSName]" \
+            --output table
+
+      - name: Destroy Infrastructure (Cleanup)
+        run: |
+          sleep 500; # wait for a while before destroying to allow manual verification
+          kubectl delete -f k8s/*.yaml || true
+          terraform destroy -auto-approve

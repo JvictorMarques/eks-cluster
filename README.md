@@ -2,7 +2,7 @@
 
 > Terraform infrastructure to provision an **AWS EKS cluster** in a modular and reusable way.
 
-This repository contains Terraform code to create a VPC and an Amazon EKS cluster using custom modules, following Infrastructure as Code (IaC) best practices.
+This repository contains Terraform code to create a VPC and an Amazon EKS cluster using custom modules, following Infrastructure as Code (IaC) best practices. It includes **CI/CD automation with GitHub Actions** for automated infrastructure validation, deployment, and Kubernetes application management.
 
 ## 🧠 Overview
 
@@ -11,27 +11,64 @@ This project provisions:
 ✔️ A VPC with public and private subnets  
 ✔️ A managed AWS EKS (Elastic Kubernetes Service) cluster  
 ✔️ Fully parameterized configuration using Terraform variables  
+✔️ CI/CD pipelines with GitHub Actions for automated testing and deployment  
 
-The goal is to provide a clean and reusable baseline for Kubernetes infrastructure on AWS.
+The goal is to provide a clean and reusable baseline for Kubernetes infrastructure on AWS using automation.
 
 ## 🗺️ Diagram Architecture
 
 ![Diagram Architecture](images/diagram.png)
 
-## 📌 Project structure
+## 🤖 CI/CD with GitHub Actions
 
-```
-.
-├── main.tf
-├── variables.tf
-├── modules
-│   ├── eks
-│   └── vpc
-├── .gitignore
-├── .terraform.lock.hcl
-├── LICENSE
-└── README.md
-```
+This project includes automated workflows for infrastructure management using GitHub Actions:
+
+### 🔍 Workflow: Plan and Validate
+**Trigger:** Pull Requests to `main` and manual dispatch  
+**File:** [`.github/workflows/plan.yaml`](.github/workflows/plan.yaml)
+
+This workflow validates your Terraform code before merging:
+- ✅ Checks Terraform formatting (`terraform fmt`)
+- ✅ Validates Terraform configuration (`terraform validate`)
+- ✅ Generates a plan to preview infrastructure changes (`terraform plan`)
+
+### 🚀 Workflow: Apply and Deploy
+**Trigger:** Push to `main` branch  
+**File:** [`.github/workflows/apply.yaml`](.github/workflows/apply.yaml)
+
+This workflow automatically deploys your infrastructure and application:
+- 🏗️ Applies Terraform configuration (`terraform apply`)
+- ☸️ Updates kubeconfig to connect to the EKS cluster
+- 📦 Deploys Kubernetes manifests from `k8s/` directory
+- 🌐 Retrieves the Application Load Balancer URL
+- 🧹 Cleans up resources after verification (optional)
+
+### 🔐 Required Secrets and Variables
+
+To use these workflows, configure the following in your GitHub repository:
+
+**Secrets:**
+- `AWS_ROLE_TO_ASSUME` - ARN of the IAM role for OIDC authentication
+
+**Variables:**
+- `TERRAFORM_VERSION` - Terraform version (e.g., `1.14.3`)
+- `AWS_REGION` - AWS region (e.g., `us-east-1`)
+- `EKS_CLUSTER_NAME` - Name of your EKS cluster
+
+> **Note:** The workflows use AWS OIDC authentication for secure, keyless access to AWS resources.
+
+### 🛡️ Recommended: Branch Protection Rules
+
+For enhanced security and code quality, it's recommended to configure branch protection rules on the `main` branch:
+
+1. Go to **Settings** → **Branches** → **Add branch protection rule**
+2. Set branch name pattern: `main`
+3. Enable **Require status checks to pass before merging**
+4. Select the **Verify Terraform Format and Validate** workflow as a required check
+5. Enable **Require pull request reviews before merging**
+
+This ensures that all infrastructure changes are validated and reviewed before being deployed to production.
+
 
 ## 🚀 Prerequisites
 
