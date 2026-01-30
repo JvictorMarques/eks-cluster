@@ -50,7 +50,7 @@ jobs:
         uses: Azure/k8s-deploy@v5
         with:
           manifests: |
-              k8s/*.yaml
+              k8s/
 
       - name: Get ALB Ingress URL
         run: |
@@ -62,5 +62,5 @@ jobs:
       - name: Destroy Infrastructure (Cleanup)
         run: |
           sleep 500; # wait for a while before destroying to allow manual verification
-          kubectl delete -f k8s/*.yaml || true
+          kubectl delete -f k8s/ || true
           terraform destroy -auto-approve
