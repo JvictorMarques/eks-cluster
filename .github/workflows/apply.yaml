@@ -61,6 +61,6 @@ jobs:
 
       - name: Destroy Infrastructure (Cleanup)
         run: |
-          sleep 500; # wait for a while before destroying to allow manual verification
-          kubectl delete -f k8s/ || true
+          sleep 120; # wait for a while before destroying to allow manual verification
+          kubectl delete -f k8s/
           terraform destroy -auto-approve
