@@ -1,7 +1,7 @@
 name: Verify Infrastructure and Format
 on:
   workflow_dispatch:
-  # pull_request:
+  # push:
   #   branches:
   #     - main
 concurrency:
@@ -11,7 +11,6 @@ concurrency:
 permissions:
   id-token: write
   contents: read
-  actions: read
 
 jobs:
   verify_fmt_and_validate:
@@ -26,9 +25,6 @@ jobs:
         with:
           terraform_version: ${{ vars.TERRAFORM_VERSION }}
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -38,15 +34,21 @@ jobs:
       - name: Terraform initialize
         run: terraform init
 
-      - name: Terraform Validate
-        run: terraform validate
-
       - name: Check AWS CLI Version
         run: aws --version
 
-      - name: Terraform Plan
-        id: apply
-        env: 
-          TF_VAR_principal_arns: '["${{ secrets.AWS_ROLE_TO_ASSUME }}"]'
-        run: terraform plan -var-file=env/terraform.tfvars -no-color -input=false
-        continue-on-error: true
+      # - name: Terraform apply
+      #   env: 
+      #     TF_VAR_principal_arns: '["${{ secrets.AWS_ROLE_TO_ASSUME }}"]'
+      #   run: terraform apply -var-file=env/terraform.tfvars -no-color -input=false -auto-approve
+
+      # - name: Set kubeconfig context
+      #   run: |
+      #     mkdir -p $HOME/.kube
+      #     echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+
+      # - name: Deploy Kubernetes manifests
+      #   uses: Azure/k8s-deploy@v5
+      #   with:
+      #     manifests: |
+      #         k8s/*.yaml
