@@ -44,6 +44,7 @@ jobs:
       - name: Set kubeconfig context
         run: |
           aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+          kubectl config current-context
 
       - name: Deploy Kubernetes manifests
         uses: Azure/k8s-deploy@v5
