@@ -1,4 +1,4 @@
-name: Apply Infrastructure and Deploy
+name: Apply Infrastructure and Deploy Application
 on:
   pull_request:
     branches:
