@@ -1,5 +1,6 @@
 name: Apply Infrastructure and Deploy Application
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
